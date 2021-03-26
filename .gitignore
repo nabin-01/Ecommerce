@@ -1,0 +1,6 @@
+# Added files
+.idea/
+__pycache__/
+venv/
+migrations/
+db.sqlite3
