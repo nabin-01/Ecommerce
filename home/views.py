@@ -1,38 +1,35 @@
 from django.shortcuts import render
+from django.views.generic.base import View
+from .models import *
 
 
 # Create your views here.
-def home(request):
-    return render(request, 'index.html')
+class BaseView(View):
+    views = {}
 
 
-def cart(request):
-    return render(request, 'cart.html')
+class HomeView(BaseView):
+    def get(self, request):
+        self.views['categories'] = Category.objects.filter(status='active')
+        self.views['sliders'] = Slider.objects.filter(status='active')
+        self.views['brands'] = Brand.objects.filter(status='active')
+        self.views['ads'] = Ad.objects.all()
+        self.views['hots'] = Item.objects.filter(label='hot_product')
+        self.views['news'] = Item.objects.filter(label='new')
+        self.views['sales'] = Item.objects.filter(label='sale')
+        self.views['defaults'] = Item.objects.filter(label='')
+        return render(request, 'index.html', self.views)
 
 
-def checkout(request):
-    return render(request, 'checkout.html')
+class ListView(BaseView):
+    def get(self, request):
+        return render(request, 'product-list.html', self.views)
 
 
-def contact(request):
-    return render(request, 'contact.html')
-
-
-def login(request):
-    return render(request, 'login.html')
-
-
-def my_account(request):
-    return render(request, 'my-account.html')
-
-
-def product_detail(request):
-    return render(request, 'product-detail.html')
-
-
-def product_list(request):
-    return render(request, 'product-list.html')
-
-
-def wishlist(request):
-    return render(request, 'wishlist.html')
+class ItemDetailView(BaseView):
+    # dynamic ids are used for making dynamic - slug is used here
+    def get(self, request, slug):
+        self.views['item_detail'] = Item.objects.filter(slug=slug)
+        cat = Item.objects.get(slug=slug).category_id
+        self.views['catitems'] = Item.objects.filter(category=cat)
+        return render(request, 'product-detail.html', self.views)
