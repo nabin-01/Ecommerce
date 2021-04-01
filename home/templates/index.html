@@ -223,8 +223,8 @@
                             </div>
                             <div class="product-price">
                                 {% if hot.discounted_price > 0 %}
-                                <h3><span style ="padding-right: 15px"><b>{{ hot.discounted_price }}</b></span></h3>
-                                <span class="text-decoration-line-through">{{ hot.price}}</span>
+                                <h3><span style ="padding-right: 15px">$<b>{{ hot.price }} - {{ hot.discounted_price }}</b></span></h3>
+                                <span class="text-decoration-line-through">{{ hot.price }}</span>
                                 <span style="padding-left: 10px">-12%</span>
                                 {% else %}
                                 <h3><span>$</span>{{ hot.price }}</h3>
@@ -289,8 +289,8 @@
                             </div>
                             <div class="product-price">
                                 {% if new.discounted_price > 0 %}
-                                <h3><span style ="padding-right: 15px"><b>{{ new.discounted_price }}</b></span></h3>
-                                <span class="text-decoration-line-through">{{ new.price}}</span>
+                                <h3><span style ="padding-right: 15px"><b>{{ new.price }} - {{ new.discounted_price }}</b></span></h3>
+                                <span class="text-decoration-line-through">{{ new.price }}</span>
                                 <span style="padding-left: 10px">-12%</span>
                                 {% else %}
                                 <h3><span>$</span>{{ new.price }}</h3>
