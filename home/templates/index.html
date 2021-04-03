@@ -11,7 +11,7 @@
                             <ul class="navbar-nav">
                                 {% for cat in categories %}
                                 <li class="nav-item">
-                                    <a class="nav-link" href="#"><i class="fas fa-{{ cat.image }}"></i>{{ cat.name }}</a>
+                                    <a class="nav-link" href="{{ cat.get_cat_url }}"><i class="fas fa-{{ cat.image }}"></i>{{ cat.name }}</a>
                                 </li>
                                 {% endfor %}
                             </ul>
@@ -191,11 +191,11 @@
         </div>
         <!-- Call to Action End -->       
         
-        <!-- Featured Product Start -->
+        <!-- Hot Product Start -->
         <div class="featured-product product">
             <div class="container-fluid">
                 <div class="section-header">
-                    <h1>Featured Product</h1>
+                    <h1>Hot Products</h1>
                 </div>
                 <div class="row align-items-center product-slider product-slider-4">
                     {% for hot in hots %}
@@ -222,12 +222,10 @@
                                 </div>
                             </div>
                             <div class="product-price">
-                                {% if hot.discounted_price > 0 %}
-                                <h3><span style ="padding-right: 15px">$<b>{{ hot.price }} - {{ hot.discounted_price }}</b></span></h3>
-                                <span class="text-decoration-line-through">{{ hot.price }}</span>
-                                <span style="padding-left: 10px">-12%</span>
+                                {% if hot.discount > 0 %}
+                                <h3><span style ="padding-left: 20px">Rs.<b>{{ hot.discounted_price }}</b></span></h3>
                                 {% else %}
-                                <h3><span>$</span>{{ hot.price }}</h3>
+                                <h3><span>Rs.<b>{{ hot.price }}</b></span></h3>
                                 {% endif %}
                                 <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
                             </div>
@@ -237,7 +235,7 @@
                 </div>
             </div>
         </div>
-        <!-- Featured Product End -->       
+        <!-- Hot Product End -->
         
         <!-- Newsletter Start -->
         <div class="newsletter">
@@ -257,18 +255,18 @@
         </div>
         <!-- Newsletter End -->        
         
-        <!-- Recent Product Start -->
+        <!-- New Product Start -->
         <div class="recent-product product">
             <div class="container-fluid">
                 <div class="section-header">
-                    <h1>Recent Product</h1>
+                    <h1>New Products</h1>
                 </div>
                 <div class="row align-items-center product-slider product-slider-4">
                     {% for new in news %}
                     <div class="col-lg-3">
                         <div class="product-item">
                             <div class="product-title">
-                                <a href="#">{{ new.title }}</a>
+                                <a href="{{ new.get_item_url }}">{{ new.title }}</a>
                                 <div class="ratting">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
@@ -288,13 +286,11 @@
                                 </div>
                             </div>
                             <div class="product-price">
-                                {% if new.discounted_price > 0 %}
-                                <h3><span style ="padding-right: 15px"><b>{{ new.price }} - {{ new.discounted_price }}</b></span></h3>
-                                <span class="text-decoration-line-through">{{ new.price }}</span>
-                                <span style="padding-left: 10px">-12%</span>
+                                {% if new.discount > 0 %}
+                                <h3><span style ="padding-left: 20px">Rs.<b>{{ new.discounted_price }}</b></span></h3>
                                 {% else %}
-                                <h3><span>$</span>{{ new.price }}</h3>
-                                {% endif %}<h3><span>$</span>99</h3>
+                                <h3><span>Rs.<b>{{ new.price }}</b></span></h3>
+                                {% endif %}
                                 <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
                             </div>
                         </div>
@@ -303,8 +299,54 @@
                 </div>
             </div>
         </div>
-        <!-- Recent Product End -->
-        
+        <!-- New Product End -->
+
+        <!-- Sale Product Start -->
+        <div class="recent-product product">
+            <div class="container-fluid">
+                <div class="section-header">
+                    <h1>Sale Products</h1>
+                </div>
+                <div class="row align-items-center product-slider product-slider-4">
+                    {% for sale in sales %}
+                    <div class="col-lg-3">
+                        <div class="product-item">
+                            <div class="product-title">
+                                <a href="{{ sale.get_item_url }}">{{ sale.title }}</a>
+                                <div class="ratting">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                </div>
+                            </div>
+                            <div class="product-image">
+                                <a href="product-detail.html">
+                                    <img src="{{ sale.image.url }}" alt="Product Image">
+                                </a>
+                                <div class="product-action">
+                                    <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                    <a href="#"><i class="fa fa-heart"></i></a>
+                                    <a href="#"><i class="fa fa-search"></i></a>
+                                </div>
+                            </div>
+                            <div class="product-price">
+                                {% if sale.discount > 0%}
+                                <h3><span style ="padding-left: 20px;">Rs.<b>{{ sale.discounted_price }}</b></span></h3>
+                                {% else %}
+                                <h3><span>Rs.<b>{{ sale.price }}</b></span></h3>
+                                {% endif %}
+                                <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Buy Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- Sale Product End -->
+
         <!-- Review Start -->
         <div class="review">
             <div class="container-fluid">
