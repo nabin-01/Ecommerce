@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.views.generic.base import View
-from django.db.models import Sum
 from .models import *
 from django.contrib import messages
 
@@ -24,10 +23,10 @@ class HomeView(BaseView):
         return render(request, 'index.html', self.views)
 
 
-class ListView(BaseView):
-    def get(self, request):
-        # render to pass dict in html
-        return render(request, 'category.html', self.views)
+# class ListView(BaseView):
+#     def get(self, request):
+#         # render to pass dict in html
+#         return render(request, 'category.html', self.views)
 
 
 class ItemDetailView(BaseView):
@@ -103,11 +102,12 @@ def contact(request):
         )
         # check entered user data is correct or not by python validators
         # saves form data to DB
-        data.save()
-        views = dict()
-        views['message'] = messages.SUCCESS(request, 'contact.html', 'The form is successfully submitted!')
+        if len(name) < 3 or len(msg) < 4:
+            data.save()
+            messages.error(request, 'Please re-submit the form!')
+        else:
+            messages.success(request, 'The form is successfully submitted!')
+        # views = dict()
         # views['message'] = 'The form is successfully submitted!'
-        return render(request, 'contact.html', views)
+        return render(request, 'contact.html')
     return render(request, 'contact.html')
-
-
