@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+# first_one -> stored in db, second_one -> what users see in html
+# python_tuples
 STATUS = (('active', 'active'), ('passive', 'passive'))
 LABEL = (('new', 'new'), ('hot_product', 'hot_product'), ('sale', 'sale'), ('default', 'default'))
 
@@ -73,3 +75,13 @@ class Item(models.Model):
     # reverse helps to pass kwargs dict to specific url
     def get_item_url(self):
         return reverse('home:products', kwargs={'slug': self.slug})
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=300)
+    email = models.EmailField(max_length=200, blank=True)
+    subject = models.TextField(blank=True)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name

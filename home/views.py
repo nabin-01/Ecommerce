@@ -74,5 +74,38 @@ class CategoryView(BaseView):
         # slug id used to get exact that category and .id gets its category id
         cat_id = Category.objects.get(slug=slug).id
         self.views['catdetail'] = Item.objects.filter(category=cat_id)
-        return render(request, 'category.html', self.views)
+        return render(request, 'product-list.html', self.views)
+
+
+class SearchView(BaseView):
+    def get(self, request):
+        # query = request.GET.get('search', None)
+        if request.method == 'GET':
+            query = request.GET['search']
+            self.views['search_product'] = Item.objects.filter(title__icontains=query)
+            return render(request, 'search.html', self.views)
+        return render(request, 'search.html')
+
+
+def contact(request):
+    if request.method == 'POST':
+        name = request.POST['name']
+        email = request.POST['email']
+        sub = request.POST['subject']
+        msg = request.POST['message']
+
+        data = Contact.objects.create(
+            name=name,
+            email=email,
+            subject=sub,
+            message=msg
+        )
+        # check entered user data is correct or not by python validators
+        # saves form data to DB
+        data.save()
+        views = dict()
+        views['message'] = 'The form is successfully submitted!'
+        return render(request, 'contact.html', views)
+    return render(request, 'contact.html')
+
 
