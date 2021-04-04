@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.views.generic.base import View
 from django.db.models import Sum
 from .models import *
+from django.contrib import messages
 
 
 # Create your views here.
@@ -104,7 +105,8 @@ def contact(request):
         # saves form data to DB
         data.save()
         views = dict()
-        views['message'] = 'The form is successfully submitted!'
+        views['message'] = messages.SUCCESS(request, 'contact.html', 'The form is successfully submitted!')
+        # views['message'] = 'The form is successfully submitted!'
         return render(request, 'contact.html', views)
     return render(request, 'contact.html')
 

@@ -8,5 +8,3 @@ admin.site.register(Ad)
 admin.site.register(Brand)
 admin.site.register(Item)
 admin.site.register(Contact)
-
-
