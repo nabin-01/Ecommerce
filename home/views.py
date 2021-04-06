@@ -168,3 +168,4 @@ def signup(request):
             return redirect('home:account')
     return render(request, 'signup.html')
 # something added
+# hello
