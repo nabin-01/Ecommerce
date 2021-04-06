@@ -167,3 +167,4 @@ def signup(request):
             messages.error(request, 'These passwords do not match!')
             return redirect('home:account')
     return render(request, 'signup.html')
+# something added
