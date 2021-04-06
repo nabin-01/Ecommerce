@@ -136,7 +136,6 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-<<<<<<< HEAD
 def signup(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -168,5 +167,7 @@ def signup(request):
             messages.error(request, 'These passwords do not match!')
             return redirect('home:account')
     return render(request, 'signup.html')
-=======
->>>>>>> master
+
+
+# def login(request):
+#     if request.method == 'POST':
