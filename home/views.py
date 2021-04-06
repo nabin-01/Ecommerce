@@ -111,3 +111,5 @@ def contact(request):
         # views['message'] = 'The form is successfully submitted!'
         return render(request, 'contact.html')
     return render(request, 'contact.html')
+
+
