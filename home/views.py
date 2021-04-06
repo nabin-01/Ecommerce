@@ -168,4 +168,4 @@ def signup(request):
             return redirect('home:account')
     return render(request, 'signup.html')
 
-# login views
+# login view
