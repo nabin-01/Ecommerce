@@ -9,10 +9,4 @@ urlpatterns = [
     path('search/', SearchView.as_view(), name='search'),
     path('contact/', contact, name='contact'),
     path('account/', signup, name='account'),
-    # path('cart/', 'cart.html', name='cart'),
-    # path('checkout/', 'checkout.html', name='checkout'),
-    # path('my-account/', 'my-account.html', name='my-account'),
-    # path('wishlist/', 'wishlist.html', name='wishlist'),
-    # path('login/', 'login.html', name='login'),
-    # path('contact/', 'contact.html', name='contact'),
 ]
