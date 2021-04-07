@@ -3,7 +3,7 @@
 {% block content %}
         
         <!-- Breadcrumb Start -->
-        <div class="breadcrumb-wrap">
+<div class="breadcrumb-wrap" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
             <div class="container-fluid">
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
@@ -114,8 +114,9 @@
                                         </ul>
                                     </div>
                                     <div id="reviews" class="container tab-pane fade">
+                                        {% for review in reviews %}
                                         <div class="reviews-submitted">
-                                            <div class="reviewer">Phasellus Gravida - <span>01 Jan 2020</span></div>
+                                            <div class="reviewer">{{ review.username }} <span>{{ review.date_posted|date:"d F, Y" }}</span></div>
                                             <div class="ratting">
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>
@@ -124,10 +125,12 @@
                                                 <i class="fa fa-star"></i>
                                             </div>
                                             <p>
-                                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+                                                {{ review.review }}
                                             </p>
                                         </div>
+                                        {% endfor %}
                                         <div class="reviews-submit">
+                                            {% if user.is_authenticated %}
                                             <h4>Give your Review:</h4>
                                             <div class="ratting">
                                                 <i class="far fa-star"></i>
@@ -137,19 +140,28 @@
                                                 <i class="far fa-star"></i>
                                             </div>
                                             <div class="row form">
-                                                <div class="col-sm-6">
-                                                    <input type="text" placeholder="Name">
+                                                <div class="col-md-12">
+                                                <form method="POST">
+                                                    {% csrf_token %}
+                                                <div class="col-md-6">
+                                                    <label>Full Name</label>
+                                                    <input name="username" type="text" placeholder="Full Name">
                                                 </div>
-                                                <div class="col-sm-6">
-                                                    <input type="email" placeholder="Email">
+                                                <div class="col-md-6">
+                                                    <label>Email</label>
+                                                    <input name="email" type="email" placeholder="Email">
                                                 </div>
-                                                <div class="col-sm-12">
-                                                    <textarea placeholder="Review"></textarea>
+                                                <div class="col-md-12">
+                                                    <label>Review</label>
+                                                    <input name="review" type="text" placeholder="Review">
                                                 </div>
-                                                <div class="col-sm-12">
-                                                    <button>Submit</button>
+                                                <div class="col-md-12">
+                                                    <button type="submit" class="btn">Submit</button>
+                                                </div>
+                                                </form>
                                                 </div>
                                             </div>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>

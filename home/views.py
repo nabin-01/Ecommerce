@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 
 
+# the views are initialized in BaseView so, ItemDetailView and CategoryView inherits this initialization
 # Create your views here.
 class BaseView(View):
     # to inherit to other classes so it auto populates.
@@ -52,6 +53,16 @@ class ItemDetailView(BaseView):
         # self.views['rating'] = Item.objects.filter(rating=rating)
         # used slug id of item to get 1 single item
         self.views['item_detail'] = Item.objects.filter(slug=slug)
+        # to display active user reviews
+        self.views['reviews'] = Review.objects.filter(status='active')
+        # self.views['rating'] = Review.objects.filter(slug_reviewed_item=id)
+        # slug_reviewed_id = Review.objects.filter(status='active').get(slug=slug).slug_reviewed_item_id
+        # self.views['reviews'] = Item.objects.filter(id=slug_reviewed_id).get(slug=slug)
+
+        # if len(str(Review.get(username=username))) < 3 or len(str(Review.get())) < 5 or len(msg) < 5:
+        #     messages.error(request, 'Please re-submit the message!')
+        # else:
+        #     messages.success(request, '✔️Your message is successfully submitted!')
 
         # # to count total of each Brand items
         # # used status 'active' of item to get all active items of Brand model
@@ -125,7 +136,7 @@ def contact(request):
         )
         # check entered user data is correct or not by python validators
         # saves form data to DB
-        if len(name) < 3 or len(msg) < 4:
+        if len(name) < 3 or len(sub) < 5 or len(msg) < 5:
             data.save()
             messages.error(request, 'Please re-submit the message!')
         else:
@@ -162,10 +173,8 @@ def signup(request):
                 )
                 user.save()
                 messages.success(request, '✔️You are registered!')
-                return redirect('home:account')
+                return redirect('/accounts/login')
         else:
             messages.error(request, 'These passwords do not match!')
             return redirect('home:account')
     return render(request, 'signup.html')
-
-# login views

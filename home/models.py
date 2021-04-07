@@ -1,5 +1,7 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
+from django.utils import timezone
 # first_one -> stored in db, second_one -> what users see in html
 # python_tuples
 STATUS = (('active', 'active'), ('passive', 'passive'))
@@ -85,3 +87,17 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Review(models.Model):
+    username = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(max_length=200, blank=True)
+    review = models.TextField()
+    rating = models.IntegerField()
+    date_posted = models.DateTimeField(default=timezone.now)
+    status = models.CharField(choices=STATUS, max_length=200)
+    item_review = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    slug_reviewed_item = models.OneToOneField(Item, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return self.username
