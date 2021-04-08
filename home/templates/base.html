@@ -28,18 +28,16 @@
         <!-- Top bar Start -->
         <div class="top-bar">
             <div class="container-fluid">
-                <div class="row">
+                <div class="row" style="align:center;">
                     {% if user.is_authenticated %}
-                    {% for user in users %}
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" style="text-align:right; padding-right:60px;" >
                         <i class="fas fa-envelope"></i>
-                        {{ user.email }}
+                        <h6>my email: {{ user.email }}</h6>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-6" style="text-align:left;padding-left:60px;">
                         <i class="fas fa-user-circle"></i>
-                        {{ user.username}}
+                        <h6>username: {{ user.username}}</h6>
                     </div>
-                    {% endfor %}
                     {% endif %}
                 </div>
             </div>

@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-        
+
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}"  role="alert">
+              <center><strong>Message: </strong>{{ message }}</center>
+            </div>
+            {% endfor %}
+        {% endif %}
         <!-- Breadcrumb Start -->
 <div class="breadcrumb-wrap" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html">
             <div class="container-fluid">
@@ -96,7 +103,7 @@
                                         <a class="nav-link" data-toggle="pill" href="#specification">Specification</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="pill" href="#reviews">Review - {{rev_count}}</a>
+                                        <a class="nav-link" data-toggle="pill" href="#reviews">Review - ( ) </a>
                                     </li>
                                 </ul>
 
@@ -120,7 +127,7 @@
                                             <h6>{{review.email}}</h6>
                                             <div class="ratting">
                                                 {% for i in x|ljust:review.rating %}
-                                                <i class="fa fa-star"></i>
+                                                    <i class="fa fa-star"></i>
                                                 {% endfor %}
                                             </div>
                                             <p>
@@ -136,14 +143,14 @@
                                                 <div class="col-md-12">
                                                 <div class="col-md-6">
                                                     <label>Rating</label>
-                                                    <input name="rating" type="number" placeholder="rating out of 10">
+                                                    <input name="rating" type="number" placeholder="rating">
                                                 </div>
                                                 <div class="col-md-6">
                                                     <input name="slug" type="hidden" value="{{product.slug}}">
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label>Review</label>
-                                                    <textarea name="review" class="input"placeholder="Review"></textarea>
+                                                    <textarea name="review" class="input" placeholder="Review"></textarea>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <button type="submit" class="btn">Submit</button>
@@ -293,7 +300,7 @@
         <div class="brand">
             <div class="container-fluid">
                 <div class="brand-slider">
-                    {% for brand in brands %}
+                    {% for brand in brand %}
                     <div class="brand-item"><img src="{{ brand.image.url }}" style="height:60%; width:70%;" alt="Brand image"></div>
                     {% endfor %}
                 </div>

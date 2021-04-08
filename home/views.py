@@ -26,14 +26,12 @@ class BaseView(View):
         views['cat_count'].append(h)
     # simply counts all item entries in Item model/database
     views['item_count'] = Item.objects.count()
-    views['users'] = User.objects.filter(username='nabin')
 
 
 class HomeView(BaseView):
     def get(self, request):
         self.views['categories'] = Category.objects.filter(status='active')
         self.views['sliders'] = Slider.objects.filter(status='active')
-        self.views['brands'] = Brand.objects.filter(status='active')
         self.views['ads'] = Ad.objects.all()
         self.views['hots'] = Item.objects.filter(label='hot_product')
         self.views['news'] = Item.objects.filter(label='new')
@@ -51,14 +49,20 @@ class HomeView(BaseView):
 class ItemDetailView(BaseView):
     # dynamic ids are used for making dynamic - slug is used here
     def get(self, request, slug):
-        # self.views['rating'] = Item.objects.filter(rating=rating)
+
         # used slug id of item to get 1 single item
         self.views['item_detail'] = Item.objects.filter(slug=slug)
+
         # to display active user reviews
         self.views['reviews'] = Review.objects.filter(slug=slug, status='active')
-        rev_id = Review.objects.filter(slug=slug).item_id
-        self.views['rev_count'] = Item.objects.filter(id=rev_id).count()
 
+        # to count user_reviews
+        # self.views['reviews'] = Item.objects.filter(slug=slug, status='active')
+        # self.views['rev_count'] = []
+        # for i in self.views['reviews']:
+        #     count_rev = Review.objects.filter(item_id=i.id).count()
+        #     j = {'count': count_rev}
+        #     self.views['rev_count'].append(j)
         # self.views['rating'] = Review.objects.filter(slug_reviewed_item=id)
         # slug_reviewed_id = Review.objects.filter(status='active').get(slug=slug).slug_reviewed_item_id
         # self.views['reviews'] = Item.objects.filter(id=slug_reviewed_id).get(slug=slug)
@@ -82,12 +86,10 @@ class ItemDetailView(BaseView):
         #     d = {'name': i.name, 'count': count_aria}
         #     # appends dict 'd' to self.views['count'] list and makes values of 'count' keys
         #     self.views['count'].append(d)
-        #
+
         # # gets all items of status 'active'
         # self.views['items'] = Item.objects.filter(status='active')
-        #
-        #
-        #
+
         # # counts total of each Category items,
         # # By passing primary id of Category model to Item model which is same field.
         # # i.e. category field = category_id = id of Category Model
@@ -199,13 +201,15 @@ def review_item(request):
             email=email,
             slug=slug
         )
-        if len(username) < 3 or len(review) < 5:
+        if rating < 1 or len(review) < 5:
             messages.error(request, 'Please re-submit the review!')
             return redirect('home:products')
         else:
             user_review.save()
-            context = {
-                'message': messages.success(request, '✔️Your review is successfully submitted!')
-            }
+            # to auto add a field while 'POST' from user, and it does not have to back-ended
+            # instance = user_review.save(commit=False)
+            # instance.author = instance.user # instance.user gets current user username
+            # instance.save()
+            messages.success(request, '✔️Your review is successfully submitted!')
 
-            return redirect(f'/products/{slug}', context)
+            return redirect(f'/products/{slug}')
