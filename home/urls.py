@@ -9,4 +9,5 @@ urlpatterns = [
     path('search/', SearchView.as_view(), name='search'),
     path('contact/', contact, name='contact'),
     path('account/', signup, name='account'),
+    path('review/', review_item, name='review'),
 ]

@@ -26,6 +26,7 @@ class BaseView(View):
         views['cat_count'].append(h)
     # simply counts all item entries in Item model/database
     views['item_count'] = Item.objects.count()
+    views['users'] = User.objects.filter(username='nabin')
 
 
 class HomeView(BaseView):
@@ -54,7 +55,10 @@ class ItemDetailView(BaseView):
         # used slug id of item to get 1 single item
         self.views['item_detail'] = Item.objects.filter(slug=slug)
         # to display active user reviews
-        self.views['reviews'] = Review.objects.filter(status='active')
+        self.views['reviews'] = Review.objects.filter(slug=slug, status='active')
+        rev_id = Review.objects.filter(slug=slug).item_id
+        self.views['rev_count'] = Item.objects.filter(id=rev_id).count()
+
         # self.views['rating'] = Review.objects.filter(slug_reviewed_item=id)
         # slug_reviewed_id = Review.objects.filter(status='active').get(slug=slug).slug_reviewed_item_id
         # self.views['reviews'] = Item.objects.filter(id=slug_reviewed_id).get(slug=slug)
@@ -137,9 +141,9 @@ def contact(request):
         # check entered user data is correct or not by python validators
         # saves form data to DB
         if len(name) < 3 or len(sub) < 5 or len(msg) < 5:
-            data.save()
             messages.error(request, 'Please re-submit the message!')
         else:
+            data.save()
             messages.success(request, '✔️Your message is successfully submitted!')
         # views = dict()
         # views['message'] = 'The form is successfully submitted!'
@@ -178,3 +182,30 @@ def signup(request):
             messages.error(request, 'These passwords do not match!')
             return redirect('home:account')
     return render(request, 'signup.html')
+
+
+def review_item(request):
+    if request.method == 'POST':
+        rating = request.POST['rating']
+        review = request.POST['review']
+        username = request.user.username
+        email = request.user.email
+        slug = request.POST['slug']
+
+        user_review = Review.objects.create(
+            rating=rating,
+            username=username,
+            review=review,
+            email=email,
+            slug=slug
+        )
+        if len(username) < 3 or len(review) < 5:
+            messages.error(request, 'Please re-submit the review!')
+            return redirect('home:products')
+        else:
+            user_review.save()
+            context = {
+                'message': messages.success(request, '✔️Your review is successfully submitted!')
+            }
+
+            return redirect(f'/products/{slug}', context)

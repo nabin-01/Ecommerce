@@ -93,11 +93,12 @@ class Review(models.Model):
     username = models.CharField(max_length=100, blank=True)
     email = models.EmailField(max_length=200, blank=True)
     review = models.TextField()
-    rating = models.IntegerField()
+    rating = models.IntegerField(default=1)
     date_posted = models.DateTimeField(default=timezone.now)
-    status = models.CharField(choices=STATUS, max_length=200)
-    item_review = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    slug_reviewed_item = models.OneToOneField(Item, on_delete=models.CASCADE, null=True)
+    status = models.CharField(default='active', choices=STATUS, max_length=200)
+    slug = models.CharField(max_length=200)
+    item_review = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.username

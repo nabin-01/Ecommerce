@@ -96,7 +96,7 @@
                                         <a class="nav-link" data-toggle="pill" href="#specification">Specification</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link" data-toggle="pill" href="#reviews">Reviews (1)</a>
+                                        <a class="nav-link" data-toggle="pill" href="#reviews">Review - {{rev_count}}</a>
                                     </li>
                                 </ul>
 
@@ -117,12 +117,11 @@
                                         {% for review in reviews %}
                                         <div class="reviews-submitted">
                                             <div class="reviewer">{{ review.username }} <span>{{ review.date_posted|date:"d F, Y" }}</span></div>
+                                            <h6>{{review.email}}</h6>
                                             <div class="ratting">
+                                                {% for i in x|ljust:review.rating %}
                                                 <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
+                                                {% endfor %}
                                             </div>
                                             <p>
                                                 {{ review.review }}
@@ -130,38 +129,29 @@
                                         </div>
                                         {% endfor %}
                                         <div class="reviews-submit">
+                                            <form method="POST" action="{% url 'home:review' %}">
+                                                {% csrf_token %}
                                             {% if user.is_authenticated %}
-                                            <h4>Give your Review:</h4>
-                                            <div class="ratting">
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                                <i class="far fa-star"></i>
-                                            </div>
                                             <div class="row form">
                                                 <div class="col-md-12">
-                                                <form method="POST">
-                                                    {% csrf_token %}
                                                 <div class="col-md-6">
-                                                    <label>Full Name</label>
-                                                    <input name="username" type="text" placeholder="Full Name">
+                                                    <label>Rating</label>
+                                                    <input name="rating" type="number" placeholder="rating out of 10">
                                                 </div>
                                                 <div class="col-md-6">
-                                                    <label>Email</label>
-                                                    <input name="email" type="email" placeholder="Email">
+                                                    <input name="slug" type="hidden" value="{{product.slug}}">
                                                 </div>
                                                 <div class="col-md-12">
                                                     <label>Review</label>
-                                                    <input name="review" type="text" placeholder="Review">
+                                                    <textarea name="review" class="input"placeholder="Review"></textarea>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <button type="submit" class="btn">Submit</button>
                                                 </div>
-                                                </form>
                                                 </div>
                                             </div>
                                             {% endif %}
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
